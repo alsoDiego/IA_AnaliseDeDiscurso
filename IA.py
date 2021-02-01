@@ -1,5 +1,6 @@
-from sklearn import preprocessing,cross_validation,svm
+from sklearn import preprocessing,svm
 from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 import sklearn
 import numpy as np
@@ -16,6 +17,12 @@ from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
 #from fuzzywuzzy import fuzz
+
+import nltk
+import sklearn
+
+print('The nltk version is {}.'.format(nltk.__version__))
+print('The scikit-learn version is {}.'.format(sklearn.__version__))
 
 #import regex as re
 def extract_features(list):
@@ -61,18 +68,22 @@ if __name__=="__main__":
 	
 	#X = extract_features(X)
 	#print (X)
+	#nltk.download()
 
-	X=np.array(X)
+	#X=np.array(X)
+	X= list(X)
+
+
 	np.random.shuffle(X)
-	print (str(type(X)))
 	X=StandardScaler().fit_transform(X)
 	y=np.array([int(line[13]) for line in X])
 	Xcomplement=np.array([line[16:] for line in X])
 	X=np.array([line[:13] for line in X])
 	np.concatenate((X,Xcomplement),axis=1)
 
-	#svmy=np.array([line[0] for line in y])
-	X_train,X_test,y_train,y_test = cross_validation.train_test_split(X,y, test_size=0.2)
+	X_train, X_test, y_train, y_test=train_test_split(X, y, test_size = 0.33, random_state = 42)
+
+	#fim de preparacao
 	titles = [
 	"K-neighbors",
 	"SVC linear",
